@@ -8,6 +8,21 @@
     <%= f.text_field :phone, autofocus: true %>
 </div>
 
+<div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true %>
+</div>
+
+<div class="field">
+    <%= f.label :surname %><br />
+    <%= f.text_field :surname, autofocus: true %>
+</div>
+
+<div class="field">
+    <%= f.label :patronymic %><br />
+    <%= f.text_field :patronymic, autofocus: true %>
+</div>
+
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>

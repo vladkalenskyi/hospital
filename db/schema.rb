@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_22_160510) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_03_164857) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -37,47 +37,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_160510) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "title"
-    t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "doctors", force: :cascade do |t|
-    t.string "name"
-    t.string "surname"
-    t.string "paternal_name"
-    t.integer "experience"
-    t.integer "user_id", null: false
-    t.integer "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_doctors_on_category_id"
-    t.index ["user_id"], name: "index_doctors_on_user_id"
-  end
-
-  create_table "patients", force: :cascade do |t|
-    t.string "name"
-    t.string "surname"
-    t.string "paternal_name"
-    t.integer "age"
-    t.string "sex"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_patients_on_user_id"
-  end
-
-  create_table "records", force: :cascade do |t|
+  create_table "receptions", force: :cascade do |t|
     t.datetime "time"
     t.text "recommendation"
-    t.integer "patients_id", null: false
-    t.integer "doctor_id", null: false
+    t.integer "doctor_id"
+    t.integer "patient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["doctor_id"], name: "index_records_on_doctor_id"
-    t.index ["patients_id"], name: "index_records_on_patients_id"
+    t.index ["doctor_id"], name: "index_receptions_on_doctor_id"
+    t.index ["patient_id"], name: "index_receptions_on_patient_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -89,12 +57,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_160510) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "phone"
+    t.string "name"
+    t.string "surname"
+    t.string "patronymic"
+    t.string "category"
+    t.string "specialty", default: "Patient"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "doctors", "categories"
-  add_foreign_key "doctors", "users"
-  add_foreign_key "patients", "users"
-  add_foreign_key "records", "doctors"
-  add_foreign_key "records", "patients", column: "patients_id"
+  add_foreign_key "receptions", "users", column: "doctor_id"
+  add_foreign_key "receptions", "users", column: "patient_id"
 end

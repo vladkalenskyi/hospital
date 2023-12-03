@@ -1,7 +1,36 @@
-<% if user_signed_in? %> 
- <div> Welcome <%= current_user.phone %> </div> 
+<% if user_signed_in? %>
   <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
 <% else %>
   <%= button_to "Sign in", new_user_session_path %> 
 <% end %>
-<h1>Hello DigitalOcean!</h1>
+<ul>
+  <% if current_user.specialty == 'Patient' %>
+    <h1>Hello patient <%= current_user.name %> <%= current_user.patronymic %>!</h1>
+    <% @users.each do |users| %>
+        <% if users.specialty == 'Doctor' %>
+        <li>
+          <h2><%= users.surname %> <%= users.name %> <%= users.patronymic %> - <%= users.category %></h2>
+        </li>
+        <% end %>
+    <% end %>
+    <h1>New reception(Enter the serial number of the doctor).</h1>
+      <%= form_with model: @reception do |form| %>
+        <div>
+          <%= form.label :title %><br>
+          <%= form.text_field :title %>
+        </div>
+        <div>
+          <%= form.submit 'Create Reception' %>
+        </div>
+      <% end %>    
+  <% else %>
+    <h1>Hello Doctor <%= current_user.name %> <%= current_user.patronymic %>!</h1>
+      <% @receptions.each do |receptions| %>
+        <% if receptions.doctor_id == current_user.id %>
+          <li>
+            <h2><%= receptions.patient_id %> <%= users.name %> <%= users.surname %></h2>
+          </li>
+        <% end %>
+      <% end %>
+  <% end %>
+</ul>

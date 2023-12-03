@@ -3,9 +3,8 @@ class CreateRecords < ActiveRecord::Migration[7.0]
     create_table :records do |t|
       t.datetime :time
       t.text :recommendation
-      t.references :patients, null: false, foreign_key: true
-      t.references :doctor, null: false, foreign_key: true
-
+      t.references :doctor_id, foreign_key: {to_table: :users}
+      t.references :patient_id, foreign_key: {to_table: :users}
       t.timestamps
     end
   end
